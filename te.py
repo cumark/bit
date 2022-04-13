@@ -36,15 +36,12 @@ def cr(i):
                , "account": {"type": "learnworlds"}, "eu_customer": 'false'}
     print(data['username'])
     while 1:
-	conment = requests.post('https://salad.academy/api/users', headers=headers,json=data,proxies=proxies)
-	if conment.status_code=='200':
-		break
+        conment = requests.post('https://salad.academy/api/users', headers=headers,json=data,proxies=proxies)
+        if conment.status_code=='200':
+            break
 if __name__ == '__main__':
     li=[]
     for i in range(4000):
         li.append(i)
     with Pool(1) as p:
         p.map(cr,li)
-# a=requests.get(url="https://salad.academy/start")
-# print(a.text)
-
