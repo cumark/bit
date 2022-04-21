@@ -1,37 +1,45 @@
-import time
-ssr://NDMuMTU2LjgzLjg0OjIzMzM6YXV0aF9hZXMxMjhfbWQ1OmFlcy0xMjgtY3RyOnBsYWluOk5USXdNekF4WVdF
-import requests
-from pypasser import reCaptchaV3
-ssr://NDMuMTU2LjgzLjg0OjIzMzM6YXV0aF9hZXMxMjhfbWQ1OmFlcy0xMjgtY3RyOnBsYWluOk5USXdNekF4WVdF 
+import datetime
+import sys
 
 from twocaptcha import TwoCaptcha
 
-""" 
-YESCAPTCHA验证码DEMO Requests版本
-目标网站 https://www.google.com/recaptcha/api2/demo
-这是谷歌官方的演示
-谷歌官方是reCaptcha V2
-这里只是演示简单的处理
-不同的网站需要针对性的提交
-参考这个思路即可
-不要生搬硬套
-"""
+config = {
+    'server': '2captcha.com',
+    # 填写你在2captcha注册的账号apikey
+    'apiKey': 'a2178d431f25780d999c1e5d27e5b9c6',
+    'softId': 3370,
+    'defaultTimeout': 120,
+    'recaptchaTimeout': 600,
+    'pollingInterval': 10,
+}
+solver = TwoCaptcha(**config)
 
 
-import datetime
+def get_token():
+    try:
+        saladurl = 'https://salad.academy/'
+        sitekey = '6LeQqWkfAAAAACpO9DVBCYse9HQ7JkLnWWwmb587'
+        action = 'submit'
+        result = solver.recaptcha(sitekey=sitekey,
+                                  url=saladurl,
+                                  version='v3', action=action, score=0.3
+                                  )
+        return result['code']
+    except:
+        get_token()
 
-url='https://www.google.com/recaptcha/api2/anchor?ar=1&k=6LeQqWkfAAAAACpO9DVBCYse9HQ7JkLnWWwmb587&co=aHR0cHM6Ly9zYWxhZC5hY2FkZW15OjQ0Mw..&hl=zh-CN&v=6pQzWaE1NP-gB4FrqRViKjM-&size=invisible&cb=96h3ll1suwk7'
 
-reCaptcha_response = reCaptchaV3(url)
+
+import requests
 
 
 def login(i):
     while 1:
-        url = 'https://www.google.com/recaptcha/api2/anchor?ar=1&k=6LeQqWkfAAAAACpO9DVBCYse9HQ7JkLnWWwmb587&co=aHR0cHM6Ly9zYWxhZC5hY2FkZW15OjQ0Mw..&hl=zh-CN&v=6pQzWaE1NP-gB4FrqRViKjM-&size=invisible&cb=96h3ll1suwk7'
+        recaptchaToken = get_token()
 
-        reCaptcha_response = reCaptchaV3(url)
-        recaptchaToken = reCaptcha_response
         print(recaptchaToken)
+        #with open('token.txt', 'w', encoding='utf8') as f:
+        #    f.write(recaptchaToken)
         # recaptchaToken = None
         headers = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36',
@@ -57,5 +65,9 @@ def login(i):
 
 
 if __name__ == '__main__':
-    for i in range(10,200):
+    start = sys.argv[1]
+    end = sys.argv[2]
+    start = int(start)
+    end = int(end)
+    for i in range(start,end):
         login(i)
