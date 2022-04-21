@@ -3,9 +3,10 @@ while 1:
     try :
         if filename=='break' or int(filename)<0:
             break
+
+        filedata=open(filename,'rb')
     except:
         continue
-    filedata=open(filename,'rb')
     li=[]
     res=''
     for i in filedata:
